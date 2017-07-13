@@ -233,10 +233,12 @@ def get_battery_status(data):
     total = 0
     if len(datalist) >0:
         for ele in datalist:
-            if ele["status"] != "optimal" and stat <2:
-
+            if (ele["status"] != "optimal" and ele["status"] != "maintenanceCharging" and ele["status"] != "learning") and stat <2:
                 stat = 2
                 optimal = 0
+            elif (ele["status"] == "learning" and stat <2):
+		stat = 1
+		optimal = 0
             else:
                 optimal = 1
             stroutput += "\nSlot : " + str(ele["physicalLocation"]["slot"]) + ", Status : " + ele[
