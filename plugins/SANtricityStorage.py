@@ -11,6 +11,7 @@ import traceback
 import json
 
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from logging.handlers import RotatingFileHandler
 
 
@@ -19,6 +20,8 @@ filestoragepath="/tmp"
 timewindow=30
 crtnewfile=True
 maxbytes=2000000
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='/tmp/nagios-python.log',level=logging.DEBUG)
 handler = RotatingFileHandler('/tmp/nagios-python.log', maxBytes=maxbytes,
