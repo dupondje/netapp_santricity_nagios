@@ -16,8 +16,8 @@ stat = 0
 listmode = ["RBCON", "EBIOM", "TRAY", "BATT", "FAN", "PSU", "DDS", "ARRY","ALL"]
 msglist = {"BATT": "Batteries", "": "Physical Components", "RBCON": "RBOD Controllers", "EBIOM": "EBOD IOMs",
            "TRAY": "Trays ", "FAN": "Fans", "PSU": "Power Supply Units", "DDS": "Disk Drives", "ARRY": "Arrays"}
-logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s', filename='nagios-python.log', level=logging.DEBUG)
-handler = RotatingFileHandler('nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
+logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s', filename='/tmp//tmp/nagios-python.log', level=logging.DEBUG)
+handler = RotatingFileHandler('/tmp/nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
                                   backupCount=20)
 logger = logging.getLogger("PHYCOMPSTAT")
 logger.setLevel(logging.INFO)
@@ -467,7 +467,7 @@ try:
                 argname="password"
             elif element == "-debug":
 
-                # logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='nagios-python.log',level=logging.DEBUG)
+                # logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='/tmp/nagios-python.log',level=logging.DEBUG)
                 logger = logging.getLogger("PHYCOMPSTAT")
                 logger.setLevel(logging.DEBUG)
                 logger.addHandler(handler)

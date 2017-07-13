@@ -16,8 +16,8 @@ stat = 0
 listmode = ["VOL", "DPOOL", "MIRV", "SNP", "RPR", "CON", "ALL"]
 msglist = {"VOL": "Volumes", "": "Logical Components", "DPOOL": "Storage Pools", "MIRV": "Mirror Volumes",
            "CON": "Consistency Groups", "SNP": "Snapshot Volumes", "RPR": "Repositories", "MIRR": "Mirror Repository"}
-logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s', filename='nagios-python.log', level=logging.DEBUG)
-handler = RotatingFileHandler('nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
+logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s', filename='/tmp/nagios-python.log', level=logging.DEBUG)
+handler = RotatingFileHandler('/tmp/nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
                                   backupCount=20)
 logger = logging.getLogger("LOGICALCOMPSTAT")
 logger.setLevel(logging.INFO)
@@ -579,7 +579,7 @@ try:
                     argname="password"
             elif element == "-debug":
 
-                # logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='nagios-python.log',level=logging.DEBUG)
+                # logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='/tmp/nagios-python.log',level=logging.DEBUG)
                 logger = logging.getLogger("LOGICALCOMPSTAT")
                 logger.setLevel(logging.DEBUG)
                 logger.addHandler(handler)

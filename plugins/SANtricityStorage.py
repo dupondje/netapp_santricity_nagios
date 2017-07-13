@@ -20,8 +20,8 @@ timewindow=30
 crtnewfile=True
 maxbytes=2000000
 
-logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='nagios-python.log',level=logging.DEBUG)
-handler = RotatingFileHandler('nagios-python.log', maxBytes=maxbytes,
+logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='/tmp/nagios-python.log',level=logging.DEBUG)
+handler = RotatingFileHandler('/tmp/nagios-python.log', maxBytes=maxbytes,
                                   backupCount=20)
 logger =logging.getLogger("SANST")
 logger.setLevel(logging.INFO)

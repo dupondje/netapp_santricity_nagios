@@ -13,8 +13,8 @@ serverUrl='https://10.0.1.30:8443'
 
 urlToServer=serverUrl+"/devmgr/v2"
 loginUrl=serverUrl +"/devmgr/utils"
-logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='nagios-python.log',level=logging.DEBUG)
-handler = RotatingFileHandler('nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
+logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='/tmp/nagios-python.log',level=logging.DEBUG)
+handler = RotatingFileHandler('/tmp/nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
                                   backupCount=20)
 
 logger = logging.getLogger("MELEVENTS")
@@ -192,9 +192,9 @@ try:
                 argname="password"
             elif element =="-debug":
 
-                #logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='nagios-python.log',level=logging.DEBUG)
+                #logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='/tmp/nagios-python.log',level=logging.DEBUG)
                 logger = logging.getLogger("VOLUMESTATBYCONT")
-                '''file_handler = logging.handlers.RotatingFileHandler('nagios-python.log', maxBytes=2500000, backupCount=5)
+                '''file_handler = logging.handlers.RotatingFileHandler('/tmp/nagios-python.log', maxBytes=2500000, backupCount=5)
                 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
                 file_handler.setFormatter(formatter)
 

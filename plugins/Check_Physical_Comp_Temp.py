@@ -12,8 +12,8 @@ mode=""
 hostipaddress=""
 webproxy=""
 stat=0
-logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='nagios-python.log',level=logging.DEBUG)
-handler = RotatingFileHandler('nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
+logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='/tmp/nagios-python.log',level=logging.DEBUG)
+handler = RotatingFileHandler('/tmp/nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
                                   backupCount=20)
 logger=logging.getLogger("PHYSICALCOMPTEMP")
 logger.addHandler(handler)
@@ -177,7 +177,7 @@ try:
                 argname="password"
             elif element == "-debug":
 
-                #logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='nagios-python.log',level=logging.DEBUG)
+                #logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='/tmp/nagios-python.log',level=logging.DEBUG)
                 logger = logging.getLogger("PHYCOMPSTAT")
                 logger.setLevel(logging.DEBUG)
                 logger.addHandler(handler)

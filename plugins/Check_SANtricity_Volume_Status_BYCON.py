@@ -18,8 +18,8 @@ dirunit = {"RIOP": "MS", "WIOP": "MS", "RLAT": "MS", "WLAT": "MS", "RTHP": "B", 
 urlToServer = serverUrl + "/devmgr/v2"
 loginUrl = serverUrl + "/devmgr/utils"
 
-logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s', filename='nagios-python.log', level=logging.INFO)
-handler = RotatingFileHandler('nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
+logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s', filename='/tmp/nagios-python.log', level=logging.INFO)
+handler = RotatingFileHandler('/tmp/nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
                                   backupCount=20)
 
 high = 95.0

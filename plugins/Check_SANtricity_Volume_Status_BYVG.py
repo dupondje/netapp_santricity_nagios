@@ -19,14 +19,14 @@ urlToServer = serverUrl + "/devmgr/v2"
 loginUrl = serverUrl + "/devmgr/utils"
 
 
-logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s', filename='nagios-python.log', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s', filename='/tmp/nagios-python.log', level=logging.DEBUG)
 logger = logging.getLogger("VOLSTATBYVG")
 high = 95.0
 low = 0.0
 
 stat = 0
 hostipaddress = ""
-handler = RotatingFileHandler('nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
+handler = RotatingFileHandler('/tmp/nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
                                   backupCount=20)
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)
