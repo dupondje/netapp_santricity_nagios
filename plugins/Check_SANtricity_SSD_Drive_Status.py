@@ -65,7 +65,7 @@ def getssddrivelinfo():
     sessionid= SANtricityStorage.login(loginUrl,username,password)
     SANtricityStorage.getStorageSystemDetails(urlToServer,sessionid, SANtricityStorage.getTime())
     file = SANtricityStorage.getStoragePath() + "/controller.csv"
-    fileforread=open(file,"rb")
+    fileforread=open(file,"r")
     csvreader=csv.reader(fileforread,delimiter=",")
     firstline=True
     currentarrayid=""
@@ -90,7 +90,7 @@ def getssddrivelinfo():
             elif hostipaddress == "":
                 arrayid=row[headerList.index("arrayId")]
                 arrayinfo[arrayid]={"arrayName":row[headerList.index("arrayName")]}
-                if currentarrayid <> arrayid and firstarray ==False:
+                if currentarrayid != arrayid and firstarray ==False:
                         lstresult.append(get_ssd_drive_stat(currentarrayid,sessionid,arrayinfo))
                 else:
                      firstarray =False
@@ -137,7 +137,7 @@ MAIN Method
 '''
 try:
     if len(sys.argv) < 7:
-        print "STATUS UNKNOWN - Required parameters not set"
+        print("STATUS UNKNOWN - Required parameters not set")
         sys.exit(3)
     else:
         nextelearg=False
@@ -151,7 +151,7 @@ try:
                     argmap[argname] =element
                     nextelearg=False
                 else:
-                    print "STATUS UNKNOWN - Incorrect value passed for"+argname
+                    print("STATUS UNKNOWN - Incorrect value passed for"+argname)
 
             elif element == "-warning":
                 nextelearg=True
@@ -177,7 +177,7 @@ try:
                 logger.setLevel(logging.DEBUG)
                 logger.addHandler(handler)
             else:
-                print "Invalid arguments passed"
+                print("Invalid arguments passed")
                 sys.exit(3)
 
 
@@ -190,20 +190,20 @@ try:
 
         try:
             warning=float(argmap["warning"])
-        except Exception,err:
-            print "STATUS UNKNOWN - Warning threshold must be numeric"
+        except Exception as err:
+            print("STATUS UNKNOWN - Warning threshold must be numeric")
             sys.exit(3)
 
 
 
         try:
             critical=float(argmap["critical"])
-        except Exception,err:
-            print "STATUS UNKNOWN - Critical threshold must be numeric"
+        except Exception as err:
+            print("STATUS UNKNOWN - Critical threshold must be numeric")
             sys.exit(3)
 
         if warning >= critical:
-            print 'STATUS UNKNOWN - Incorrect value for warning  and critical threshold'
+            print('STATUS UNKNOWN - Incorrect value for warning  and critical threshold')
             sys.exit(3)
 
         if argmap["username"] !="":
@@ -223,10 +223,10 @@ try:
     logger.debug("Host Add"+hostipaddress)
 
     str = getssddrivelinfo()
-    print str
+    print(str)
     sys.exit(stat)
-except Exception,err:
-        print "STATUS UNKNOWN"
+except Exception as err:
+        print("STATUS UNKNOWN")
         logger.error("Error in SSD drive statistics",exc_info=True)
         sys.exit(3)
 

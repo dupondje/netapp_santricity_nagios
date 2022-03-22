@@ -85,7 +85,7 @@ def get_drive_state():
     sessionid= SANtricityStorage.login(loginUrl,username,password)
     SANtricityStorage.getStorageSystemDetails(urlToServer,sessionid,timewindow)
     file = SANtricityStorage.getStoragePath() + "/controller.csv"
-    fileforread=open(file,"rb")
+    fileforread=open(file,"r")
     csvreader=csv.reader(fileforread,delimiter=",")
     firstline=True
     currentarrayid=""
@@ -113,7 +113,7 @@ def get_drive_state():
             elif  hostipaddress == "":
                 arrayid=row[headerList.index("arrayId")]
                 arrayinfo[arrayid]={"arrayName":row[headerList.index("arrayName")]}
-                if currentarrayid <> arrayid and firstArray == False:
+                if currentarrayid != arrayid and firstArray == False:
                     lstResult.append(get_drive_detail(currentarrayid,sessionid,arrayinfo))
                     controllername={}
                     controllername[row[headerList.index("controllerRef")]]=row[headerList.index("controllerLabel")]
@@ -154,7 +154,7 @@ def get_drive_state():
 
 try:
     if len(sys.argv) < 10:
-        print "STATUS UNKNOWN - Required parameters not set"
+        print("STATUS UNKNOWN - Required parameters not set")
         sys.exit(3)
     else:
         nextelearg=False
@@ -197,7 +197,7 @@ try:
                 logger.setLevel(logging.DEBUG)
                 logger.addHandler(handler)
             else:
-                print "Invalid arguments passed"
+                print("Invalid arguments passed")
                 sys.exit(3)
 
 
@@ -213,7 +213,7 @@ try:
         try:
             index=listMode[mode];
         except:
-            print "STATUS UNKNOWN - Incorrect value for mode"
+            print("STATUS UNKNOWN - Incorrect value for mode")
             sys.exit(3)
 
 
@@ -221,26 +221,26 @@ try:
 
             range= argmap["r"]
             if range !="low" and range !="high":
-                print "STATUS UNKNOW - Incorrect value for range selector. It must be either \"low\" or \"high\". "
+                print("STATUS UNKNOW - Incorrect value for range selector. It must be either \"low\" or \"high\". ")
                 sys.exit(3)
 
         try:
             low=float(argmap["warning"])
-        except Exception,err:
-            print "STATUS UNKNOWN - Warning threshold must be numeric"
+        except Exception as err:
+            print("STATUS UNKNOWN - Warning threshold must be numeric")
             sys.exit(3)
 
 
 
         try:
             high=float(argmap["critical"])
-        except Exception,err:
-            print "STATUS UNKNOWN - Critical threshold must be numeric"
+        except Exception as err:
+            print("STATUS UNKNOWN - Critical threshold must be numeric")
             sys.exit(3)
 
 
         if (range == "high" and low >=high) or (range =="low" and low <= high):
-            print 'STATUS UNKNOWN - Incorrect value for warning and critical threshold'
+            print('STATUS UNKNOWN - Incorrect value for warning and critical threshold')
             sys.exit(3)
 
 
@@ -263,10 +263,10 @@ try:
     logger.debug("Mode:"+mode)
     logger.debug("Range:"+range)
     str=get_drive_state()
-    print str
+    print(str)
     sys.exit(stat)
-except Exception,err:
+except Exception as err:
     logging.error("Error in main block",exc_info=True)
 
-    print "STATUS UNKNOWN"
+    print("STATUS UNKNOWN")
     sys.exit(3)

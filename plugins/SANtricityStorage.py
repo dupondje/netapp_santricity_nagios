@@ -53,9 +53,9 @@ def login(loginurl,username="rw",password="rw"):
                 #print r.cookies['JSESSIONID']
                 return r.cookies['JSESSIONID']
 
-        except Exception,err:
+        except Exception as err:
                 logging.error("Error in login",exc_info=True)
-                print "STATUS UNKNOWN-In valid web proxy IP or Web proxy is not responding."
+                print("STATUS UNKNOWN-In valid web proxy IP or Web proxy is not responding.")
                 sys.exit(3)
 
 def getStorageSystem(urltoserver,sessionId):
@@ -76,12 +76,12 @@ def getStorageSystem(urltoserver,sessionId):
                         dataMap["arrayName"]=listEle["name"]
                         dataMap["ip1"] = listEle["ip1"]
                         dataMap["ip2"] = listEle["ip2"]
-                        if listEle["name"] <> "" and listEle["status"] <> "offline":
+                        if listEle["name"] != "" and listEle["status"] != "offline":
                                 lst.append(dataMap)
                 return lst
-        except Exception,err:
+        except Exception as err:
                 logger.error("Error in getStorageSystem",exc_info=True)
-                print "STATUS UNKNOWN"
+                print("STATUS UNKNOWN")
                 sys.exit(3)
 
 
@@ -116,10 +116,10 @@ def getStorageSystemDetails(urltoserver,sessionid,timewindow =5):
                 crtnewfile = True
                 if len(lst) >0:
                     try:
-                        fhandleCon=open(filestoragepath+"/controller.csv",'wb')
-                        fhandleDrv=open(filestoragepath+"/driverMap.csv",'wb')
-                        fhandlevg=open(filestoragepath+"/VolumeGroup.csv",'wb')
-                        fhandlevl=open(filestoragepath+"/Volume.csv",'wb')
+                        fhandleCon=open(filestoragepath+"/controller.csv",'w')
+                        fhandleDrv=open(filestoragepath+"/driverMap.csv",'w')
+                        fhandlevg=open(filestoragepath+"/VolumeGroup.csv",'w')
+                        fhandlevl=open(filestoragepath+"/Volume.csv",'w')
 
                         for ele in lst:
                                 logging.info(list(ele.keys()))
@@ -150,7 +150,7 @@ def writeDataToCSV(filehandle,data,crtnewfile):
                     elif i>0:
                         writer.writerow(lstEle)
                     i+=1
-        except Exception,err:
+        except Exception as err:
                 logging.error("Error in writing file ",exc_info=True)
 
 
@@ -196,7 +196,7 @@ def getStroageSystemGraph(urltoserver,eleMap):
                             driveLabel = lstEle["physicalLocation"]["trayRef"]
 
 
-                            if driveLabel<> None and driveLabel in lstTrayRef:
+                            if driveLabel != None and driveLabel in lstTrayRef:
 
                                #import ipdb;ipdb.set_trace()
 
@@ -230,7 +230,7 @@ def getStroageSystemGraph(urltoserver,eleMap):
                     return dirData
 
 
-        except Exception,err:
+        except Exception as err:
                logger.error("Error in getStroageSystemGraph",exc_info=True)
 
                return False
@@ -258,7 +258,7 @@ def getVolumeStates(urltoserver,sessionid,timewindow,arrayid):
              lst=json.load(fileforread)
              return lst
              fileforread.close()
-         except Exception,err:
+         except Exception as err:
                logging.error("Error in getVolumeStates", exc_info=True)
                getVolumeFile(urltoserver,sessionid,arrayid)
 
@@ -269,8 +269,8 @@ def writeDirDataToCSV(filename,lstofarrays):
              for lstele in lstofarrays:
                  fileForData.write(str(lstele)+"\n")
 
-         except Exception,err:
-                print Exception,err
+         except Exception as err:
+                print(Exception,err)
          finally:
              fileForData.close()
 
@@ -287,7 +287,7 @@ def getVolumeFile(urltoserver,sessionid,arrayid):
               #writeDirDataToCSV(filename,lstOfArraySys)
               fileforread.close()
           else:
-              print "Unknown - REST end point returned "+str(r.status_code) + "- "+r.reason
+              print("Unknown - REST end point returned "+str(r.status_code) + "- "+r.reason)
               sys.exit(3)
 
 
@@ -303,21 +303,21 @@ def get_data_from_REST(urltoserver,sessionid,arrayid,restendpoint =""):
               lstOfArraySys=r.json()
           elif r.status_code ==404:
               logging.info("Error in get_data_from_REST",exc_info=True)
-              print "Status UNKNOWN-Storage device not found"
+              print("Status UNKNOWN-Storage device not found")
 
           elif r.status_code == 424:
               logging.info("Error in get_data_from_REST",exc_info=True)
-              print "Status UNKNOWN -Storage device offline"
+              print("Status UNKNOWN -Storage device offline")
 
           else:
-              print "Unknown - REST end point returned "+str(r.status_code) + "- "+r.reason
+              print("Unknown - REST end point returned "+str(r.status_code) + "- "+r.reason)
 
           return lstOfArraySys
 
 
 def read_csv_file(fileName,key1,key2):
          file= filestoragepath +"/"+fileName
-         fileForRead=open(file,"rb")
+         fileForRead=open(file,"r")
          csvReader=csv.reader(fileForRead,delimiter=",")
          firstLine=True
          datalist={}
@@ -343,15 +343,15 @@ def deleteArray(sessionid,urlToServer,id):
                 data = "{ \"id\": [\""+id+"\"]}"
                 r=requests.delete(url,verify=False, headers={'Content-Type': 'application/json','Cookie':'JSESSIONID='+sessionid})
 
-                print r.status_code
+                print(r.status_code)
 
 
-     except Exception,err:
+     except Exception as err:
                 logger.error("Error in configure array",exc_info=True)
-                print "STATUS UNKNOWN"
+                print("STATUS UNKNOWN")
                 sys.exit(3)
 
 if __name__=='__main__' :
         #sessionid=login("https://172.16.1.49:8443/devmgr/utils","rw","rw")
         #deleteArray(sessionid,"https://172.16.1.49:8443/devmgr/v2","9e8b33fa-e00a-423a-9a78-b1744322246e")
-        print ""+datetime.datetime.strftime(datetime.datetime.now() - datetime.timedelta(days= 8),"%s")
+        print (""+datetime.datetime.strftime(datetime.datetime.now() - datetime.timedelta(days= 8),"%s"))

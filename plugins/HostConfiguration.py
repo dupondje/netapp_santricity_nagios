@@ -21,8 +21,7 @@ newarrayid=0
 newarrayname=""
 newarraystatus=""
 logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='/tmp/nagios-python.log',level=logging.DEBUG)
-handler = RotatingFileHandler('/tmp/nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
-                                  backupCount=20)
+handler = RotatingFileHandler('/tmp/nagios-python.log', maxBytes=SANtricityStorage.maxbytes, backupCount=20)
 
 logger =logging.getLogger("HOSTCON")
 logger.addHandler(handler)
@@ -52,9 +51,9 @@ def checkStorageSystem(sessionId,ip1,ip2):
 
                 return False
 
-        except Exception,err:
+        except Exception as err:
                 logger.error("Error in checkStorageSystem",exc_info=True)
-                print "STATUS UNKNOWN"
+                print("STATUS UNKNOWN")
                 sys.exit(3)
 
 
@@ -78,10 +77,10 @@ def getNewStorageSystem(sessionId,id):
 
                 return False
 
-        except Exception,err:
+        except Exception as err:
                 logging.error(Exception)
                 logging.error(err)
-                print "STATUS UNKNOWN"
+                print("STATUS UNKNOWN")
                 sys.exit(3)
 
 def configureArray(sessionid,ip1,ip2):
@@ -105,9 +104,9 @@ def configureArray(sessionid,ip1,ip2):
 
 
 
-     except Exception,err:
+     except Exception as err:
                 logger.error("Error in configure array",exc_info=True)
-                print "STATUS UNKNOWN"
+                print("STATUS UNKNOWN")
                 sys.exit(3)
 
 def checkforhostconfiguration(ip1,ip2):
@@ -129,7 +128,7 @@ def checkforhostconfiguration(ip1,ip2):
 try:
 
         if len(sys.argv) < 7:
-            print "STATUS UNKNOWN-Required parameters not set"
+            print("STATUS UNKNOWN-Required parameters not set")
             sys.exit(3)
         else:
             nextelearg=False
@@ -161,7 +160,7 @@ try:
                     logger.setLevel(logging.DEBUG)
                     logger.addHandler(handler)
                 else:
-                    print "Invalid arguments passed"
+                    print("Invalid arguments passed")
                     sys.exit(3)
 
 
@@ -185,9 +184,9 @@ try:
             str=checkforhostconfiguration(argmap["ip1"],argmap["ip2"])
 
       #  str=loadhardwareinventory()
-        print str
+        print(str)
         sys.exit(stat)
-except Exception,err:
+except Exception as err:
         logger.error("Error in HostConfiguration",exc_info=True)
-        print "STATUS UNKNOWN"
+        print("STATUS UNKNOWN")
         sys.exit(3)

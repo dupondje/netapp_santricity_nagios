@@ -77,9 +77,9 @@ def getMelEvents(arrayinfo,sessionid):
 
         return strrepdata
 
-    except Exception,err:
+    except Exception as err:
         logger.error("Error in Storage pool",exc_info=True)
-        print "STATUS UNKNOWN - Error in storage pool"
+        print("STATUS UNKNOWN - Error in storage pool")
         sys.exit(3)
 
 '''
@@ -114,7 +114,7 @@ def getMelEventInformation():
     sessionid= SANtricityStorage.login(loginUrl,username,password)
     SANtricityStorage.getStorageSystemDetails(urlToServer,sessionid)
     filename = SANtricityStorage.getStoragePath() + "/controller.csv"
-    fileforread=open(filename,"rb")
+    fileforread=open(filename,"r")
     csvreader=csv.reader(fileforread,delimiter=",")
     firstline=True
     arrayInfo={}
@@ -137,7 +137,7 @@ def getMelEventInformation():
             elif  hostipaddress == "":
                 arrayid=row[headerlist.index("arrayId")]
                 arrayInfo[arrayid]={"arrayName":row[headerlist.index("arrayName")]}
-                if currentarrayid <> arrayid and firstArray ==False:
+                if currentarrayid != arrayid and firstArray ==False:
                         lstEle= {"arrayName":currentArrayName,"arrayId":currentarrayid}
                         strResultData+=getMelEvents(lstEle,sessionid)
                 else:
@@ -162,7 +162,7 @@ def getMelEventInformation():
 
 try:
     if len(sys.argv) < 4:
-        print "STATUS UNKNOWN - Required parameters not set"
+        print("STATUS UNKNOWN - Required parameters not set")
         sys.exit(3)
     else:
         nextelearg=False
@@ -176,7 +176,7 @@ try:
                     argmap[argname] =element
                     nextelearg=False
                 else:
-                    print "STATUS UNKNOWN - Incorrect value passed for"+argname
+                    print("STATUS UNKNOWN - Incorrect value passed for"+argname)
 
             elif element =="-h":
                 nextelearg=True
@@ -201,7 +201,7 @@ try:
                 logger.addHandler(file_handler)'''
                 logger.setLevel(logging.DEBUG)
             else:
-                print "Invalid arguments passed"
+                print("Invalid arguments passed")
                 sys.exit(3)
 
 
@@ -228,9 +228,9 @@ try:
 
 
     str=getMelEventInformation()
-    print str
+    print(str)
     sys.exit(stat)
-except Exception,err:
-        print "STATUS UNKNOWN"
+except Exception as err:
+        print("STATUS UNKNOWN")
         logger.error("Error in Mel events",exc_info=True)
         sys.exit(3)

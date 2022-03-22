@@ -18,8 +18,8 @@ dirunit = {"RIOP": "MS", "WIOP": "MS", "RLAT": "MS", "WLAT": "MS", "RTHP": "B", 
 urlToServer = serverUrl + "/devmgr/v2"
 loginUrl = serverUrl + "/devmgr/utils"
 
-logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s', filename='/tmp/nagios-python.log', level=logging.INFO)
-handler = RotatingFileHandler('/tmp/nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
+logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s', filename='nagios-python.log', level=logging.INFO)
+handler = RotatingFileHandler('nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
                                   backupCount=20)
 
 high = 95.0
@@ -112,10 +112,10 @@ def get_volume_info(arrayid, controllerids, sessionid, arrayinfo):
 
             return dirdata
         else:
-            print "STATUS UNKNOWN - No details fetched from the array."
+            print("STATUS UNKNOWN - No details fetched from the array.")
             sys.exit(3)
 
-    except Exception, err:
+    except Exception as err:
         logger.error("Error in get volume info", exc_info=True)
         # return False
 
@@ -127,7 +127,7 @@ def getVolumeState():
     SANtricityStorage.getStorageSystemDetails(urlToServer, sessionId, SANtricityStorage.getTime())
 
     file = SANtricityStorage.getStoragePath() + "/controller.csv"
-    fileForRead = open(file, "rb")
+    fileForRead = open(file, "r")
     csvReader = csv.reader(fileForRead, delimiter=",")
     firstLine = True
     currentArrayId = ""
@@ -156,14 +156,14 @@ def getVolumeState():
                 arrayId = row[headerList.index("arrayId")]
                 arrayInfo[arrayId] = {"arrayName": row[headerList.index("arrayName")],
                                       "controllerLabel": controllerName}
-                if currentArrayId <> arrayId and len(controllerId) <> 0:
+                if currentArrayId != arrayId and len(controllerId) != 0:
                     (arrayInfo[currentArrayId])["controllerLabel"] = controllerName
                     lstResult.append(get_volume_info(currentArrayId, controllerId, sessionId, arrayInfo))
                     controllerId = []
                     controllerName = {}
                     controllerId.append(row[headerList.index("controllerRef")])
                     controllerName[row[headerList.index("controllerRef")]] = row[headerList.index("controllerLabel")]
-                elif currentArrayId <> arrayId:
+                elif currentArrayId != arrayId:
                     controllerId = []
                     controllerName = {}
                     controllerId.append(row[headerList.index("controllerRef")])
@@ -216,7 +216,7 @@ def getVolumeState():
 try:
     logger.info("Hi in file")
     if len(sys.argv) < 8:
-        print "STATUS UNKNOWN - Required parameters not set"
+        print("STATUS UNKNOWN - Required parameters not set")
         sys.exit(3)
     else:
         nextelearg = False
@@ -258,7 +258,7 @@ try:
                 logger.setLevel(logging.DEBUG)
                 logger.addHandler(handler)
             else:
-                print "Invalid arguments passed"
+                print("Invalid arguments passed")
                 sys.exit(3)
 
 
@@ -272,33 +272,33 @@ try:
 
             range = argmap["r"]
         else:
-            print "STATUS UNKNOW - No range selector defined."
+            print("STATUS UNKNOW - No range selector defined.")
             sys.exit(3)
 
         if range != "low" and range != "high":
-            print "STATUS UNKNOW - Incorrect value for range selector. It must be either \"low\" or \"high\". "
+            print("STATUS UNKNOW - Incorrect value for range selector. It must be either \"low\" or \"high\". ")
             sys.exit(3)
 
 
 
         try:
             low = float(argmap["warning"])
-        except Exception, err:
-            print "STATUS UNKNOWN - Warning threshold must be numeric"
+        except Exception as err:
+            print("STATUS UNKNOWN - Warning threshold must be numeric")
             sys.exit(3)
 
 
 
         try:
             high = float(argmap["critical"])
-        except Exception, err:
-            print "STATUS UNKNOWN - Critical threshold must be numeric"
+        except Exception as err:
+            print("STATUS UNKNOWN - Critical threshold must be numeric")
             sys.exit(3)
 
 
 
         if (range == "high" and low >= high) or (range == "low" and low <= high):
-            print 'STATUS UNKNOWN - Incorrect value for warning and critical threshold'
+            print('STATUS UNKNOWN - Incorrect value for warning and critical threshold')
             sys.exit(3)
 
         if argmap["username"] !="":
@@ -315,7 +315,7 @@ try:
         try:
             index = listMode[mode];
         except:
-            print "STATUS UNKNOWN - Incorrect value for mode"
+            print("STATUS UNKNOWN - Incorrect value for mode")
             sys.exit(3)
 
 
@@ -327,10 +327,10 @@ try:
     logger.debug("Host Add" + hostipaddress)
     logger.debug("Mode:" + mode)
     str = getVolumeState()
-    print str
+    print(str)
     sys.exit(stat)
-except Exception, err:
+except Exception as err:
     logger.error("Error inside get volume stat by controller", exc_info=True)
-    print "STATUS UNKNOWN"
+    print("STATUS UNKNOWN")
     sys.exit(3)
 

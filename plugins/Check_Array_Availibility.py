@@ -12,8 +12,7 @@ urlToServer = serverUrl + "/devmgr/v2"
 loginUrl = serverUrl + "/devmgr/utils"
 stat = 0
 logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s', filename='/tmp/nagios-python.log', level=logging.DEBUG)
-handler = RotatingFileHandler('/tmp/nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
-                              backupCount=20)
+handler = RotatingFileHandler('/tmp/nagios-python.log', maxBytes=SANtricityStorage.maxbytes, backupCount=20)
 logger = logging.getLogger("STORAGEPOOL")
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)
@@ -50,7 +49,7 @@ def getArrayInformation():
     sessionid = SANtricityStorage.login(loginUrl, username, password)
     SANtricityStorage.getStorageSystemDetails(urlToServer, sessionid)
     file = SANtricityStorage.getStoragePath() + "/controller.csv"
-    fileForRead = open(file, "rb")
+    fileForRead = open(file, "r")
     csvReader = csv.reader(fileForRead, delimiter=",")
     firstLine = True
     strResultData = ""
@@ -73,7 +72,7 @@ def getArrayInformation():
                     break
             elif hostipaddress == "":
                 arrayId = row[headerList.index("arrayId")]
-                if currentArrayId <> arrayId and firstArray == False:
+                if currentArrayId != arrayId and firstArray == False:
                     strResultData += get_array_availibility(sessionid, currentArrayId)
                 else:
                     firstArray = False
@@ -92,7 +91,7 @@ def getArrayInformation():
 
 try:
     if len(sys.argv) < 3:
-        print "STATUS UNKNOWN - Required parameters not set"
+        print("STATUS UNKNOWN - Required parameters not set")
         sys.exit(3)
     else:
         nextelearg = False
@@ -123,7 +122,7 @@ try:
                 logger.setLevel(logging.DEBUG)
                 logger.addHandler(handler)
             else:
-                print "Invalid arguments passed"
+                print("Invalid arguments passed")
                 sys.exit(3)
 
 
@@ -156,10 +155,10 @@ try:
     elif stat == 2:
         str = "Critical - Array is down|" + str
 
-    print str
+    print(str)
     sys.exit(stat)
 
-except Exception, err:
-    print "STATUS UNKNOWN"
+except Exception as err:
+    print("STATUS UNKNOWN")
     logger.error("Error in Storage Pool Status", exc_info=True)
     sys.exit(3)
