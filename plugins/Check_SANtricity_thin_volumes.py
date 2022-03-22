@@ -96,9 +96,9 @@ def getStoragePoolInfo(eleMap, sessionid):
             stat=3
         return {"strPerfData": strdata, "reportData": strrepdata}
 
-    except Exception, err:
+    except Exception as err:
         logger.error("Error in Storage pool", exc_info=True)
-        print "STATUS UNKNOWN - Error in storage pool"
+        print("STATUS UNKNOWN - Error in storage pool")
         sys.exit(3)
 
 
@@ -112,7 +112,7 @@ def getStoragePoolInformation():
     sessionid = SANtricityStorage.login(loginUrl,username,password)
     SANtricityStorage.getStorageSystemDetails(urlToServer, sessionid)
     file = SANtricityStorage.getStoragePath() + "/controller.csv"
-    fileforread = open(file, "rb")
+    fileforread = open(file, "r")
     csvreader = csv.reader(fileforread, delimiter=",")
     firstline = True
     arrayinfo = {}
@@ -137,7 +137,7 @@ def getStoragePoolInformation():
             elif hostipaddress == "":
                 arrayId = row[headerList.index("arrayId")]
                 arrayinfo[arrayId] = {"arrayName": row[headerList.index("arrayName")]}
-                if currentarrayid <> arrayId and firstarray == False:
+                if currentarrayid != arrayId and firstarray == False:
                     lstEle = {"arrayName": currentarrayname, "arrayId": currentarrayid}
                     getStoragePoolInfo(lstEle, sessionid)
                 else:
@@ -201,7 +201,7 @@ def getStoragePoolInformation():
 
 try:
     if len(sys.argv) < 7:
-        print "STATUS UNKNOWN - Required parameters not set"
+        print("STATUS UNKNOWN - Required parameters not set")
         sys.exit(3)
     else:
         nextelearg = False
@@ -215,7 +215,7 @@ try:
                     argmap[argname] = element
                     nextelearg = False
                 else:
-                    print "STATUS UNKNOWN - Incorrect value passed for" + argname
+                    print("STATUS UNKNOWN - Incorrect value passed for" + argname)
 
             elif element == "-warning":
                 nextelearg = True
@@ -240,7 +240,7 @@ try:
                 logger.addHandler(handler)
                 logger.setLevel(logging.DEBUG)
             else:
-                print "Invalid arguments passed"
+                print("Invalid arguments passed")
                 sys.exit(3)
 
 
@@ -254,8 +254,8 @@ try:
 
         try:
             warning = float(argmap["warning"])
-        except Exception, err:
-            print "STATUS UNKNOWN - Warning threshold must be numeric"
+        except Exception as err:
+            print("STATUS UNKNOWN - Warning threshold must be numeric")
             sys.exit(3)
 
 
@@ -263,14 +263,14 @@ try:
         try:
             critical = float(argmap["critical"])
             if critical < 5:
-                print "STATUS UNKNOWN - Critical threshold must be greater than 5"
+                print("STATUS UNKNOWN - Critical threshold must be greater than 5")
                 sys.exit(3)
-        except Exception, err:
-            print "STATUS UNKNOWN - Critical threshold must be numeric"
+        except Exception as err:
+            print("STATUS UNKNOWN - Critical threshold must be numeric")
             sys.exit(3)
 
         if warning <= critical:
-            print 'STATUS UNKNOWN - Incorrect value for warning and critical threshold'
+            print('STATUS UNKNOWN - Incorrect value for warning and critical threshold')
             sys.exit(3)
 
         if argmap["username"] !="":
@@ -291,10 +291,10 @@ try:
     logger.debug("Host Add" + hostipaddress)
 
     str = getStoragePoolInformation()
-    print str
+    print(str)
     sys.exit(stat)
-except Exception, err:
-    print "STATUS UNKNOWN"
+except Exception as err:
+    print("STATUS UNKNOWN")
     logger.error("Error in Storage Pool Status", exc_info=True)
     sys.exit(3)
 

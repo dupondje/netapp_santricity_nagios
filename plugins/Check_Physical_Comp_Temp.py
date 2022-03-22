@@ -40,7 +40,6 @@ def get_phy_comp_temprature(arrayid,sessionid,arrayinfo):
         crutype=ele["rtrAttributes"]["parentCru"]["type"]
 
         if crutype in ["supportCru","controller","esm"] and ele["status"] !="optimal":
-
             stat =2
         if crutype =="supportCru":
             strpowesupp+="\nSlot : "+str(ele["physicalLocation"]["slot"]) +" Status : "+ele["status"]
@@ -79,7 +78,7 @@ def getphysicalcomtemprature():
     sessionid= SANtricityStorage.login(loginUrl,username,password)
     SANtricityStorage.getStorageSystemDetails(urlToServer,sessionid, SANtricityStorage.getTime())
     file = SANtricityStorage.getStoragePath() + "/controller.csv"
-    fileforread=open(file,"rb")
+    fileforread=open(file,"r")
     csvreader=csv.reader(fileforread,delimiter=",")
     firstline=True
     currentarrayid=""
@@ -104,7 +103,7 @@ def getphysicalcomtemprature():
             elif hostipaddress == "":
                 arrayid=row[headerList.index("arrayId")]
                 arrayinfo[arrayid]={"arrayName":row[headerList.index("arrayName")]}
-                if currentarrayid <> arrayid and firstarray ==False:
+                if currentarrayid != arrayid and firstarray ==False:
                         lstresult.append(get_phy_comp_temprature(currentarrayid,sessionid,arrayinfo))
                 else:
                      firstarray =False
@@ -145,7 +144,7 @@ def getphysicalcomtemprature():
 
 try:
     if len(sys.argv) < 8:
-        print "STATUS UNKNOWN - Required parameters not set"
+        print("STATUS UNKNOWN - Required parameters not set")
         sys.exit(3)
     else:
         nextelearg=False
@@ -182,7 +181,7 @@ try:
                 logger.setLevel(logging.DEBUG)
                 logger.addHandler(handler)
             else:
-                print "STATUS UNKNOWN - Invalid arguments passed"
+                print("STATUS UNKNOWN - Invalid arguments passed")
                 sys.exit(3)
 
 
@@ -197,7 +196,7 @@ try:
             warning =float(argmap["warning"])
         except Exception:
             logger.error("Error in physical component status",exc_info=True)
-            print "STATUS UNKNOWN - Warning threshold must be numeric"
+            print("STATUS UNKNOWN - Warning threshold must be numeric")
             sys.exit(3)
 
         try:
@@ -206,7 +205,7 @@ try:
 
         except Exception:
             logger.error("Error in physical component status",exc_info=True)
-            print "STATUS UNKNOWN - Critical threshold must be numeric"
+            print("STATUS UNKNOWN - Critical threshold must be numeric")
             sys.exit(3)
 
         if argmap["username"] !="":
@@ -218,7 +217,7 @@ try:
             password = argmap["password"]
 
         if warning >= critical:
-            print "STATUS UNKNOWN - Incorrect value for warning and critical thresold, warning must be less than critical"
+            print("STATUS UNKNOWN - Incorrect value for warning and critical thresold, warning must be less than critical")
             sys.exit(3)
 
         if argmap["hostIp"] != "127.0.0.1":
@@ -228,9 +227,9 @@ try:
         logger.debug("Critical Temp:"+argmap["critical"])
 
     str=getphysicalcomtemprature()
-    print str
+    print(str)
     sys.exit(stat)
-except Exception,err:
+except Exception as err:
     logger.error("Error in Check_Physical_Comp_Temp",exc_info=True)
-    print "STATUS UNKNOWN"
+    print("STATUS UNKNOWN")
     sys.exit(3)

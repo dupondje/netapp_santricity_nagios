@@ -34,7 +34,7 @@ def get_logical_comp_stat_by_array(arrayid, sessionid, arrinfo, controllername):
     strOutPut = "\nArray Name : " + arrinfo[arrayid]["arrayName"]
 
     if stat == 2:
-        print "Critical - Array is down, no other status can be fetched"
+        print("Critical - Array is down, no other status can be fetched")
         sys.exit(2)
 
     resultdata = {}
@@ -460,7 +460,7 @@ def getlogicalcomptstatus():
     sessionid = SANtricityStorage.login(loginUrl,username,password)
     SANtricityStorage.getStorageSystemDetails(urlToServer, sessionid, SANtricityStorage.getTime())
     file = SANtricityStorage.getStoragePath() + "/controller.csv"
-    fileforread = open(file, "rb")
+    fileforread = open(file, "r")
     csvreader = csv.reader(fileforread, delimiter=",")
     firstline = True
     currentarrayid = ""
@@ -489,7 +489,7 @@ def getlogicalcomptstatus():
 
                 arrayId = row[headerList.index("arrayId")]
                 arrayinfo[arrayId] = {"arrayName": row[headerList.index("arrayName")]}
-                if currentarrayid <> arrayId and firstarray == False:
+                if currentarrayid != arrayId and firstarray == False:
 
                     lstresult.append(
                         get_logical_comp_stat_by_array(currentarrayid, sessionid, arrayinfo, controllername))
@@ -549,7 +549,7 @@ def getlogicalcomptstatus():
 '''
 try:
     if len(sys.argv) < 2:
-        print "STATUS UNKNOWN - Required parameters not set"
+        print("STATUS UNKNOWN - Required parameters not set")
         sys.exit(3)
     else:
         nextelearg = False
@@ -579,12 +579,12 @@ try:
                     argname="password"
             elif element == "-debug":
 
-                # logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='/tmp/nagios-python.log',level=logging.DEBUG)
+                # logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='nagios-python.log',level=logging.DEBUG)
                 logger = logging.getLogger("LOGICALCOMPSTAT")
                 logger.setLevel(logging.DEBUG)
                 logger.addHandler(handler)
             else:
-                print "Invalid arguments passed"
+                print("Invalid arguments passed")
                 sys.exit(3)
 
 
@@ -595,7 +595,7 @@ try:
 
             loginUrl = serverUrl + "/devmgr/utils"
         else:
-            print "STATUS UNKNOWN- Webproxy must be set"
+            print("STATUS UNKNOWN- Webproxy must be set")
             sys.exit(3)
 
 
@@ -605,7 +605,7 @@ try:
             try:
                 index = listmode.index(mode);
             except:
-                print "STATUS UNKNOWN-Incorrect value for mode"
+                print("STATUS UNKNOWN-Incorrect value for mode")
                 sys.exit(3)
         else:
             mode =""
@@ -625,9 +625,9 @@ try:
     logger.debug("Mode:" + argmap["mode"])
 
     str = getlogicalcomptstatus()
-    print str
+    print(str)
     sys.exit(stat)
-except Exception, err:
+except Exception as err:
     logger.error("Error inside get volume stat by controller", exc_info=True)
-    print "STATUS UNKNOWN"
+    print("STATUS UNKNOWN")
     sys.exit(3)

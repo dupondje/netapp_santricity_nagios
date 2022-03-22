@@ -142,12 +142,12 @@ def getVolumeInfo(arrayId, controllerIds, sessionId, arrayInfo, controllername, 
 
             return dirData
         else:
-            print "STATUS UNKNOWN"
+            print("STATUS UNKNOWN")
             sys.exit(3)
 
-    except Exception, err:
+    except Exception as err:
         logger.error("Error in getvolumeinfo", exc_info=True)
-        print "STATUS UNKNOWN"
+        print("STATUS UNKNOWN")
         sys.exit(3)
 
 
@@ -161,7 +161,7 @@ def getVolumeState():
     logger.debug("Inside getvolumestate")
     SANtricityStorage.getStorageSystemDetails(urlToServer, sessionid, SANtricityStorage.getTime())
     file = SANtricityStorage.getStoragePath() + "/controller.csv"
-    fileForRead = open(file, "rb")
+    fileForRead = open(file, "r")
     csvReader = csv.reader(fileForRead, delimiter=",")
     firstLine = True
     controllername = {}
@@ -209,7 +209,7 @@ def getVolumeState():
 
                 arrayId = row[headerList.index("arrayId")]
                 arrayInfo[arrayId] = {"arrayName": row[headerList.index("arrayName")], "volumeGroup": volumegroupName}
-                if currentArrayId <> arrayId and len(controllerId) <> 0:
+                if currentArrayId != arrayId and len(controllerId) != 0:
                     (arrayInfo[currentArrayId])["volumeGroup"] = volumegroupName
                     lstResult.append(getVolumeInfo(currentArrayId, controllerId, sessionid, arrayInfo, controllername,
                                                    controllerdetails))
@@ -218,7 +218,7 @@ def getVolumeState():
                     volumegroupName = {}
                     controllerId.append(row[headerList.index("volumeGroupRef")])
                     volumegroupName[row[headerList.index("volumeGroupRef")]] = row[headerList.index("volumeGroup")]
-                elif currentArrayId <> arrayId:
+                elif currentArrayId != arrayId:
                     controllerId = []
                     volumegroupName = {}
                     controllerId.append(row[headerList.index("volumeGroupRef")])
@@ -268,7 +268,7 @@ Checks if all required arguments are passed or not.
 try:
     logger.debug("STarting execution of Volume Status")
     if len(sys.argv) < 7:
-        print "STATUS UNKNOWN - Required parameters not set"
+        print("STATUS UNKNOWN - Required parameters not set")
         sys.exit(3)
     else:
         nextelearg = False
@@ -298,12 +298,12 @@ try:
                     argname="password"
             elif element == "-debug":
 
-                # logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='/tmp/nagios-python.log',level=logging.DEBUG)
+                # logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s',filename='nagios-python.log',level=logging.DEBUG)
                 logger = logging.getLogger("VOLUMESTATE")
                 logger.setLevel(logging.DEBUG)
                 logger.addHandler(handler)
             else:
-                print "Invalid arguments passed"
+                print("Invalid arguments passed")
                 sys.exit(3)
 
 
@@ -319,7 +319,7 @@ try:
         try:
             index = listMode[mode];
         except:
-            print "STATUS UNKNOWN - Incorrect value for mode"
+            print("STATUS UNKNOWN - Incorrect value for mode")
             sys.exit(3)
 
 
@@ -340,10 +340,10 @@ try:
     logger.debug("Host Add" + hostipaddress)
     logger.debug("Mode:" + mode)
     str = getVolumeState()
-    print str
+    print(str)
     sys.exit(stat)
-except Exception, err:
+except Exception as err:
     logging.error("Error in Volume Status", exc_info=True)
-    print "STATUS UNKNOWN"
+    print("STATUS UNKNOWN")
     sys.exit(3)
 

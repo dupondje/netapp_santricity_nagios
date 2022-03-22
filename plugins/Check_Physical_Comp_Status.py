@@ -16,7 +16,7 @@ stat = 0
 listmode = ["RBCON", "EBIOM", "TRAY", "BATT", "FAN", "PSU", "DDS", "ARRY","ALL"]
 msglist = {"BATT": "Batteries", "": "Physical Components", "RBCON": "RBOD Controllers", "EBIOM": "EBOD IOMs",
            "TRAY": "Trays ", "FAN": "Fans", "PSU": "Power Supply Units", "DDS": "Disk Drives", "ARRY": "Arrays"}
-logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s', filename='/tmp//tmp/nagios-python.log', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s - %(name)s : %(message)s', filename='/tmp/nagios-python.log', level=logging.DEBUG)
 handler = RotatingFileHandler('/tmp/nagios-python.log', maxBytes=SANtricityStorage.maxbytes,
                                   backupCount=20)
 logger = logging.getLogger("PHYCOMPSTAT")
@@ -35,7 +35,7 @@ def get_phy_comp_stat_by_array(arrayid, sessionid, arrinfo, controllername):
     resultdata = get_array_status(sessionid, arrayid)
     strOutPut += resultdata["strOutPut"]
     if stat == 2:
-        print "Critical - Array is down, no other status can be fetched"
+        print("Critical - Array is down, no other status can be fetched")
         sys.exit(2)
 
     resultdata = {}
@@ -237,8 +237,8 @@ def get_battery_status(data):
                 stat = 2
                 optimal = 0
             elif (ele["status"] == "learning" and stat <2):
-		stat = 1
-		optimal = 0
+                stat = 1
+                optimal = 0
             else:
                 optimal = 1
             stroutput += "\nSlot : " + str(ele["physicalLocation"]["slot"]) + ", Status : " + ele[
@@ -355,7 +355,7 @@ def getphysicalcomptstatus():
     sessionid = SANtricityStorage.login(loginUrl,username,password)
     SANtricityStorage.getStorageSystemDetails(urlToServer, sessionid, SANtricityStorage.getTime())
     file = SANtricityStorage.getStoragePath() + "/controller.csv"
-    fileforread = open(file, "rb")
+    fileforread = open(file, "r")
     csvreader = csv.reader(fileforread, delimiter=",")
     firstline = True
     currentarrayid = ""
@@ -384,7 +384,7 @@ def getphysicalcomptstatus():
 
                 arrayId = row[headerList.index("arrayId")]
                 arrayinfo[arrayId] = {"arrayName": row[headerList.index("arrayName")]}
-                if currentarrayid <> arrayId and firstarray == False:
+                if currentarrayid != arrayId and firstarray == False:
 
                     lstresult.append(get_phy_comp_stat_by_array(currentarrayid, sessionid, arrayinfo, controllername))
                     controllername = {}
@@ -439,7 +439,7 @@ def getphysicalcomptstatus():
 '''
 try:
     if len(sys.argv) < 2:
-        print "STATUS UNKNOWN - Required parameters not set"
+        print("STATUS UNKNOWN - Required parameters not set")
         sys.exit(3)
     else:
         nextelearg = False
@@ -474,7 +474,7 @@ try:
                 logger.setLevel(logging.DEBUG)
                 logger.addHandler(handler)
             else:
-                print "Invalid arguments passed"
+                print("Invalid arguments passed")
                 logging.error("Invalid arguments passed",exc_info=True)
                 sys.exit(3)
 
@@ -486,7 +486,7 @@ try:
 
             loginUrl = serverUrl + "/devmgr/utils"
         else:
-            print "STATUS UNKNOWN- Webproxy must be set"
+            print("STATUS UNKNOWN- Webproxy must be set")
             logging.error("Webproxy not set",exc_info=True)
             sys.exit(3)
 
@@ -497,7 +497,7 @@ try:
             try:
                 index = listmode.index(mode);
             except:
-                print "STATUS UNKNOWN-Incorrect value for mode"
+                print("STATUS UNKNOWN-Incorrect value for mode")
                 sys.exit(3)
         else:
             mode =""
@@ -518,9 +518,9 @@ try:
     logger.debug("Mode:" + argmap["mode"])
 
     str = getphysicalcomptstatus()
-    print str
+    print(str)
     sys.exit(stat)
-except Exception, err:
+except Exception as err:
     logger.error("Error inside get volume stat by controller", exc_info=True)
-    print "STATUS UNKNOWN"
+    print("STATUS UNKNOWN")
     sys.exit(3)
